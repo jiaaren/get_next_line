@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 12:14:10 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/14 13:18:59 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ char	*concat_lst(t_list *lst, int len, int nl_index)
 		start++;										// makes sure not to run this if lst len is 1
 	if (start > 0 && start < BUFFER_SIZE)
 		len -= (BUFFER_SIZE - start);
-	if (nl_index != -1)
-		len -= (BUFFER_SIZE - nl_index);
+	len -= (BUFFER_SIZE - nl_index);
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (NULL);
@@ -111,7 +110,10 @@ int		get_next_line(int fd, char **line)
 	{
 		index = add_str(fd, buff, &lst, &char_tmp);
 		if (index == -1)
+		{	
+			free(char_tmp);
 			return (1);
+		}
 		if (index)
 			lst_len++; // added this or else we add 1 if lst is zero
 		nl_index = check_newline(char_tmp, buff);
