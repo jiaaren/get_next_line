@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 11:43:14 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/14 12:14:10 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,18 @@ int		get_next_line(int fd, char **line)
 	while(index)
 	{
 		index = add_str(fd, buff, &lst, &char_tmp);
-		lst_len++;
+		if (index == -1)
+			return (1);
+		if (index)
+			lst_len++; // added this or else we add 1 if lst is zero
 		nl_index = check_newline(char_tmp, buff);
 		if (nl_index != -1 || index == 0)
 		{
 			*line = concat_lst(lst, lst_len * BUFFER_SIZE, nl_index);
 			ft_lstclear(&lst, free);
-			if (!index)
+			if (!index) // how is this working properly to return 0?
 				return (0);
 			return (1);
 		}
 	}
-	if (index == 0)
-		return (0);
-	if (index == -1)
-		return (1);
 }
