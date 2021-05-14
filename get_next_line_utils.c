@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:19:59 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 00:34:09 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/14 11:33:30 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,4 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		*lst = tmp;
 	}
 	*lst = NULL;
-}
-
-void	print_lst(t_list *lst)
-{
-	while (lst)
-	{
-		printf("%s\n", lst->content);
-		lst = lst->next;
-	}
 }
