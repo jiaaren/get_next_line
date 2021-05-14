@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:19:59 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 11:33:30 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/14 13:55:39 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_lstadd_back(t_list **lst, char *content)
 {
 	t_list	*new;
-	t_list	*tmp;  // had to add tmp here earlier because i kept amending the address of the pointer.
+	t_list	*tmp;
 
 	new = malloc(sizeof(t_list));
 	if (!new)
@@ -45,4 +45,17 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		*lst = tmp;
 	}
 	*lst = NULL;
+}
+
+int	ft_lstsize(t_list *lst)
+{
+	int	len;
+
+	len = 0;
+	while (lst)
+	{
+		len++;
+		lst = lst->next;
+	}
+	return (len);
 }

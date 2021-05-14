@@ -6,17 +6,16 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 13:18:59 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/14 14:00:17 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		check_newline(char *str, char *buffer)
+int	check_newline(char *str, char *buffer)
 {	
-	int i;
-	int j;
-	int index;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -24,21 +23,18 @@ int		check_newline(char *str, char *buffer)
 	{
 		if (str[i] == '\n')
 		{
-			while (str[i + j + 1]) // + 1 to skip the newline
+			while (str[i + j + 1])
 			{
 				buffer[j] = str[i + j + 1];
 				j++;
 			}
-			buffer[j] = '\0'; // realised that i is returned without ending j
-			return (i); // return where is the ending
+			buffer[j] = '\0';
+			return (i);
 		}
-		i++; 
+		i++;
 	}
-	buffer[j] = '\0'; // need to shift j here
+	buffer[j] = '\0';
 	return (-1);
-	/*
-		Make sure to fill buffer with '\0' if nothing
-	*/
 }
 
 char	*concat_lst(t_list *lst, int len, int nl_index)
@@ -49,8 +45,8 @@ char	*concat_lst(t_list *lst, int len, int nl_index)
 	int		start;
 
 	start = 0;
-	while ((lst->content)[start] && lst->next != NULL) // double check that we are not iterating through if this is the last node. 
-		start++;										// makes sure not to run this if lst len is 1
+	while ((lst->content)[start] && lst->next != NULL)
+		start++;
 	if (start > 0 && start < BUFFER_SIZE)
 		len -= (BUFFER_SIZE - start);
 	len -= (BUFFER_SIZE - nl_index);
@@ -69,7 +65,7 @@ char	*concat_lst(t_list *lst, int len, int nl_index)
 	return (tmp);
 }
 
-int		add_str(int fd, char *buffer, t_list **lst, char **str)
+int	add_str(int fd, char *buffer, t_list **lst, char **str)
 {
 	int		index;
 	char	*char_tmp;
@@ -81,7 +77,7 @@ int		add_str(int fd, char *buffer, t_list **lst, char **str)
 		while (buffer[index])
 		{
 			char_tmp[index] = buffer[index];
-			index++;	
+			index++;
 		}
 	}
 	else
@@ -92,38 +88,34 @@ int		add_str(int fd, char *buffer, t_list **lst, char **str)
 	return (index);
 }
 
-
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
-	static char	buff[BUFFER_SIZE + 1]; // why + 1?
+	static char	buff[BUFFER_SIZE + 1];
 	int			index;
 	char		*char_tmp;
 	t_list		*lst;
-	int			lst_len;
 	int			nl_index;
 
 	index = 1;
-	lst_len = 0;
 	char_tmp = NULL;
 	lst = NULL;
-	while(index)
+	while (index)
 	{
 		index = add_str(fd, buff, &lst, &char_tmp);
 		if (index == -1)
 		{	
 			free(char_tmp);
-			return (1);
+			return (-1);
 		}
-		if (index)
-			lst_len++; // added this or else we add 1 if lst is zero
 		nl_index = check_newline(char_tmp, buff);
-		if (nl_index != -1 || index == 0)
+		if (nl_index > 0 || index == 0)
 		{
-			*line = concat_lst(lst, lst_len * BUFFER_SIZE, nl_index);
+			*line = concat_lst(lst, ft_lstsize(lst) * BUFFER_SIZE, nl_index);
 			ft_lstclear(&lst, free);
-			if (!index) // how is this working properly to return 0?
+			if (!index)
 				return (0);
 			return (1);
 		}
 	}
+	return (0);
 }
