@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	check_newline(char *str, char *buffer)
 {	
@@ -88,22 +88,25 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 
 void	free_buffer(char **buff, int fd)
 {
-	free(buff[fd]);
-	buff[fd] = NULL;
+	if (fd >= 0 && fd <= MAX_FD)
+	{
+		free(buff[fd]);
+		buff[fd] = NULL;
+	}
 }
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*buff[1024 + 1];
+	static char	*buff[MAX_FD + 1];
 	int			index;
 	char		*char_tmp;
 	t_list		*lst;
 
-	index = 1;
+	index = -1;
 	lst = NULL;
-	if (!buff[fd])
+	if (!buff[fd] && fd >= 0 && fd <= MAX_FD)
 		buff[fd] = calloc((BUFFER_SIZE + 1), sizeof(char));
-	while (index)
+	while (index && fd >= 0 && fd <= MAX_FD)
 	{
 		index = add_str(fd, buff[fd], &lst, &char_tmp);
 		if (index == -1)
