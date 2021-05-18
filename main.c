@@ -14,7 +14,7 @@ int main(void)
     // printf("%i\n", return_val);
     // printf("%s\n", tmp);
 
-    while ((return_val = get_next_line(file, &tmp)))
+    while ((return_val = get_next_line(-1, &tmp)))
     {
         printf("Return value = %i\n", return_val);
         printf("%s\n", tmp);
