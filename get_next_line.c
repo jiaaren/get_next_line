@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 10:41:29 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 10:46:45 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,14 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 	}
 	else
 		index = read(fd, char_tmp, BUFFER_SIZE);
-	if (index != -1)
-	{
-		char_tmp[index] = '\0';
-		*str = char_tmp;
-		ft_lstadd_back(lst, char_tmp);
+	if (index == -1)
+	{	
+		free(char_tmp);
+		return (-1);
 	}
+	char_tmp[index] = '\0';
+	*str = char_tmp;
+	ft_lstadd_back(lst, char_tmp);
 	return (index);
 }
 
@@ -98,10 +100,7 @@ int	get_next_line(int fd, char **line)
 	{
 		index = add_str(fd, buff, &lst, &char_tmp);
 		if (index == -1)
-		{	
-			free(char_tmp);
 			return (-1);
-		}
 		else if (check_newline(char_tmp, buff) >= 0 || index == 0)
 		{
 			*line = concat_lst(lst, ft_linesize(lst));
