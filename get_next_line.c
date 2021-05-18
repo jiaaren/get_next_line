@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 14:00:17 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 09:48:34 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	get_next_line(int fd, char **line)
 			return (-1);
 		}
 		nl_index = check_newline(char_tmp, buff);
-		if (nl_index > 0 || index == 0)
+		if (nl_index >= 0 || index == 0)
 		{
 			*line = concat_lst(lst, ft_lstsize(lst) * BUFFER_SIZE, nl_index);
 			ft_lstclear(&lst, free);
