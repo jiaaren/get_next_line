@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 12:32:59 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 14:10:07 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int	get_next_line(int fd, char **line)
 	t_list		*lst;
 
 	index = 1;
-	char_tmp = NULL;
 	lst = NULL;
 	if (!buff[fd])
 		buff[fd] = calloc((BUFFER_SIZE + 1), sizeof(char));
@@ -102,23 +101,16 @@ int	get_next_line(int fd, char **line)
 	{
 		index = add_str(fd, buff[fd], &lst, &char_tmp);
 		if (index == -1)
-		{
-			if (buff[fd])
-				free(buff[fd]);
-			return (-1);
-		}
+			break ;
 		else if (check_newline(char_tmp, buff[fd]) >= 0 || index == 0)
 		{
 			*line = concat_lst(lst, ft_linesize(lst));
 			ft_lstclear(&lst, free);
 			if (!index)
-			{
-				if (buff[fd])
-					free(buff[fd]);
-				return (0);
-			}
+				break ;
 			return (1);
 		}
 	}
-	return (0);
+	free(buff[fd]);
+	return (index);
 }

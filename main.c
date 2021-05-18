@@ -50,7 +50,6 @@ int main(void)
     // return_val = read(file, buff, 0);
     // printf("%i\n", return_val);
     // printf("%s\n", buff);
-
     close(file1);
     close(file2);
     close(file3);

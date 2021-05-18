@@ -6,12 +6,12 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:17:55 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 11:02:44 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 14:12:40 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 40
@@ -31,9 +31,9 @@ typedef struct s_list
 int		get_next_line(int fd, char **line);
 void	ft_lstadd_back(t_list **lst, char *content);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
-int		ft_lstsize(t_list *lst);
 int		ft_linesize(t_list *lst);
-char	*ft_strdup(const char *str);
 void	print_lst(t_list *lst);
+void	ft_bzero(void *ptr, size_t num);
+void	*ft_calloc(size_t count, size_t size);
 
 #endif
