@@ -55,7 +55,6 @@ char	*concat_lst(t_list *lst, int len)
 		lst = lst->next;
 	}
 	tmp[i_tmp] = '\0';
-	ft_lstclear(&lst, free);
 	return (tmp);
 }
 
@@ -87,6 +86,12 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 	return (index);
 }
 
+void	free_buffer(char **buff, int fd)
+{
+	free(buff[fd]);
+	buff[fd] = NULL;
+}
+
 int	get_next_line(int fd, char **line)
 {
 	static char	*buff[1024 + 1];
@@ -106,12 +111,12 @@ int	get_next_line(int fd, char **line)
 		else if (check_newline(char_tmp, buff[fd]) >= 0 || index == 0)
 		{
 			*line = concat_lst(lst, ft_linesize(lst));
+			ft_lstclear(&lst, free);
 			if (!index)
 				break ;
 			return (1);
 		}
 	}
-	free(buff[fd]);
-	buff[fd] = NULL;
+	free_buffer(buff, fd);
 	return (index);
 }
