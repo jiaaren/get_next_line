@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 11:02:42 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 12:17:45 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 
 int	get_next_line(int fd, char **line)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	static char	*buff[1024];
 	int			index;
 	char		*char_tmp;
 	t_list		*lst;
@@ -96,17 +96,25 @@ int	get_next_line(int fd, char **line)
 	index = 1;
 	char_tmp = NULL;
 	lst = NULL;
+	if (!buff[fd])
+		buff[fd] = calloc((BUFFER_SIZE + 1), sizeof(char));
 	while (index)
 	{
-		index = add_str(fd, buff, &lst, &char_tmp);
+		index = add_str(fd, buff[fd], &lst, &char_tmp);
 		if (index == -1)
+		{
+			free(buff[fd]);
 			return (-1);
-		else if (check_newline(char_tmp, buff) >= 0 || index == 0)
+		}
+		else if (check_newline(char_tmp, buff[fd]) >= 0 || index == 0)
 		{
 			*line = concat_lst(lst, ft_linesize(lst));
 			ft_lstclear(&lst, free);
 			if (!index)
+			{
+				free(buff[fd]);
 				return (0);
+			}
 			return (1);
 		}
 	}
