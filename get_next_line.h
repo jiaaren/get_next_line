@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:17:55 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 10:22:39 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 14:28:42 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ typedef struct s_list
 int		get_next_line(int fd, char **line);
 void	ft_lstadd_back(t_list **lst, char *content);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
-int		ft_lstsize(t_list *lst);
 int		ft_linesize(t_list *lst);
-char	*ft_strdup(const char *str);
 void	print_lst(t_list *lst);
 
 #endif
