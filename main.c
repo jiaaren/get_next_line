@@ -6,7 +6,7 @@ int main(void)
     int file;
     int return_val;
 
-    file = open("textfile.txt", O_RDONLY);
+    file = open("textfile2.txt", O_RDONLY);
     // return_val = get_next_line(file, &tmp);
     // printf("%i\n", return_val);
     // printf("%s\n", tmp);

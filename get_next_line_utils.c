@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:19:59 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/14 13:55:39 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 10:27:59 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,22 @@ int	ft_lstsize(t_list *lst)
 	while (lst)
 	{
 		len++;
+		lst = lst->next;
+	}
+	return (len);
+}
+
+int	ft_linesize(t_list *lst)
+{
+	int		len;
+	char	*str;
+
+	len = 0;
+	while (lst)
+	{
+		str = lst->content;
+		while (*str++)
+			len++;
 		lst = lst->next;
 	}
 	return (len);

@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 09:48:34 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/05/18 10:30:35 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,12 @@ int	check_newline(char *str, char *buffer)
 	return (-1);
 }
 
-char	*concat_lst(t_list *lst, int len, int nl_index)
+char	*concat_lst(t_list *lst, int len)
 {
 	char	*tmp;
 	int		i_tmp;
 	int		i_lst;
-	int		start;
 
-	start = 0;
-	while ((lst->content)[start] && lst->next != NULL)
-		start++;
-	if (start > 0 && start < BUFFER_SIZE)
-		len -= (BUFFER_SIZE - start);
-	len -= (BUFFER_SIZE - nl_index);
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (NULL);
@@ -94,7 +87,6 @@ int	get_next_line(int fd, char **line)
 	int			index;
 	char		*char_tmp;
 	t_list		*lst;
-	int			nl_index;
 
 	index = 1;
 	char_tmp = NULL;
@@ -107,10 +99,9 @@ int	get_next_line(int fd, char **line)
 			free(char_tmp);
 			return (-1);
 		}
-		nl_index = check_newline(char_tmp, buff);
-		if (nl_index >= 0 || index == 0)
+		if (check_newline(char_tmp, buff) >= 0 || index == 0)
 		{
-			*line = concat_lst(lst, ft_lstsize(lst) * BUFFER_SIZE, nl_index);
+			*line = concat_lst(lst, ft_linesize(lst));
 			ft_lstclear(&lst, free);
 			if (!index)
 				return (0);
