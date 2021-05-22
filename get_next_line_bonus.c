@@ -86,27 +86,17 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 	return (index);
 }
 
-void	free_buffer(char **buff, int fd)
+int	process_gnl(int fd, char **line, char **buff)
 {
-	if (fd >= 0 && fd <= MAX_FD)
-	{
-		free(buff[fd]);
-		buff[fd] = NULL;
-	}
-}
-
-int	get_next_line(int fd, char **line)
-{
-	static char	*buff[MAX_FD + 1];
 	int			index;
 	char		*char_tmp;
 	t_list		*lst;
 
 	index = -1;
 	lst = NULL;
-	if ((fd >= 0 && fd <= MAX_FD) && !buff[fd])
+	if (!buff[fd])
 		buff[fd] = calloc((BUFFER_SIZE + 1), sizeof(char));
-	while (index && (fd >= 0 && fd <= MAX_FD))
+	while (index)
 	{
 		index = add_str(fd, buff[fd], &lst, &char_tmp);
 		if (index == -1)
@@ -120,6 +110,18 @@ int	get_next_line(int fd, char **line)
 			return (1);
 		}
 	}
-	free_buffer(buff, fd);
+	free(buff[fd]);
+	buff[fd] = NULL;
+	return (index);
+}
+
+int	get_next_line(int fd, char **line)
+{
+	int			index;
+	static char	*buff[MAX_FD + 1];
+
+	index = -1;
+	if (fd >= 0 && fd <= MAX_FD)
+		index = process_gnl(fd, line, buff);
 	return (index);
 }
