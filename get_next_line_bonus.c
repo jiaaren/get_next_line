@@ -95,7 +95,7 @@ int	process_gnl(int fd, char **line, char **buff)
 	index = -1;
 	lst = NULL;
 	if (!buff[fd])
-		buff[fd] = calloc((BUFFER_SIZE + 1), sizeof(char));
+		buff[fd] = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	while (index)
 	{
 		index = add_str(fd, buff[fd], &lst, &char_tmp);
@@ -118,10 +118,10 @@ int	process_gnl(int fd, char **line, char **buff)
 int	get_next_line(int fd, char **line)
 {
 	int			index;
-	static char	*buff[MAX_FD + 1];
+	static char	*buff[OPEN_MAX + 1];
 
 	index = -1;
-	if (fd >= 0 && fd <= MAX_FD)
+	if (fd >= 0 && fd <= OPEN_MAX)
 		index = process_gnl(fd, line, buff);
 	return (index);
 }
