@@ -6,12 +6,17 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:19:59 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 14:06:21 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/07/21 12:13:29 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
+/*
+	Accepts a single linked list double pointer, and char *, represented by string.
+	Creates new node and append to end of list.
+	Note: Need double pointer in order to append to lst with len 0 
+*/
 void	ft_lstadd_back(t_list **lst, char *content)
 {
 	t_list	*new;
@@ -22,6 +27,7 @@ void	ft_lstadd_back(t_list **lst, char *content)
 		return ;
 	new->content = content;
 	new->next = NULL;
+	// for instances where len of lst is 0
 	if (*lst == NULL)
 		*lst = new;
 	else
@@ -33,6 +39,7 @@ void	ft_lstadd_back(t_list **lst, char *content)
 	}
 }
 
+// Free all nodes within list, accepts list pointer and function pointer ('free' to be passed in)
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {	
 	t_list	*tmp;
@@ -47,6 +54,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
+// Returns length of list
 int	ft_linesize(t_list *lst)
 {
 	int		len;
@@ -80,6 +88,7 @@ void	ft_bzero(void *ptr, size_t num)
 	}
 }
 
+// Used in conjunction with ft_bzero to mimic calloc, i.e. initialise memory to 0
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*tmp;

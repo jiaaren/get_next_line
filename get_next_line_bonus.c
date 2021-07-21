@@ -6,12 +6,18 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 21:11:17 by jkhong            #+#    #+#             */
-/*   Updated: 2021/05/18 14:10:07 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/07/21 12:45:42 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
+/*
+	Performs the following:
+	(i) Cycle through string passed to check for '\n'
+	(ii) If '\n' found, fill buffer of characters after '\n', and NUL terminate
+	(iii) Returns index integer (including 0) if '\n' found, else return (-1)
+*/
 int	check_newline(char *str, char *buffer)
 {	
 	int	i;
@@ -33,10 +39,15 @@ int	check_newline(char *str, char *buffer)
 		}
 		i++;
 	}
+	// NUL terminates if (i) no more chars in buffer
 	buffer[j] = '\0';
 	return (-1);
 }
 
+/*
+	(i) Calculates length of characters in lst, and concatenate to string
+	(ii) Returns string to user
+*/
 char	*concat_lst(t_list *lst, int len)
 {
 	char	*tmp;
@@ -58,6 +69,17 @@ char	*concat_lst(t_list *lst, int len)
 	return (tmp);
 }
 
+/*
+	1. Reads from either buffer or file descriptor (fd)
+	- Reads from buffer if buffer[0] has value. 
+	  Value may be 0 if:
+		- initial calloc in process_gnl
+		- NUL terminated by check_newline when no more chars in buffer
+	- Reads from fd
+	2. Fills char_tmp buffer
+	- malloc sizeof can be dynamic because it will be freed by end of single gnl execution
+	3. Appends to end of list using ft_lstadd_back
+*/
 int	add_str(int fd, char *buffer, t_list **lst, char **str)
 {
 	int		index;
@@ -75,6 +97,7 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 	}
 	else
 		index = read(fd, char_tmp, BUFFER_SIZE);
+	// if error noted
 	if (index == -1)
 	{	
 		free(char_tmp);
@@ -86,6 +109,16 @@ int	add_str(int fd, char *buffer, t_list **lst, char **str)
 	return (index);
 }
 
+/*
+	(i) Checks if file descriptor exists, else calloc with sizeof(BUFFER_SIZE)
+	(ii) Loop until '\n' is found:
+		- add_str appends string to end of list from (a) buffer or (b) file descriptor
+		- check_newline - checks if '\n' exists in read string, updates and NUL terminates buff
+			- if '\n' found or index == 0, (a) concatenate list, (b) update **line user input, (c) free list 
+			- else repeat loop
+	(iii) If read return value (index) is 0 (file fully read) or -1
+	- free buff[fd] and important to assign NULL subsequently
+*/
 int	process_gnl(int fd, char **line, char **buff)
 {
 	int			index;
@@ -115,6 +148,12 @@ int	process_gnl(int fd, char **line, char **buff)
 	return (index);
 }
 
+/*
+	Uses array of static (char *) replicating a key-item array.
+	Keys are represented by file descriptors (fd) passed by users
+	if fd is negative integer or less than OPEN_MAX, function ends, 
+	Else, proceed processing via func process_gnl.
+*/
 int	get_next_line(int fd, char **line)
 {
 	int			index;
